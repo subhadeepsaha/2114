@@ -47,6 +47,7 @@ view: products {
     sql: ${TABLE}.retail_price ;;
   }
 
+
   dimension: sku {
     type: string
     sql: ${TABLE}.sku ;;
@@ -78,8 +79,9 @@ view: products {
 
   measure: total_retail_price {
     type: sum
-    hidden: yes
+    hidden: no
     sql: ${retail_price} ;;
+    value_format_name: usd
   }
 
   measure: average_retail_price {
