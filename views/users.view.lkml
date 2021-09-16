@@ -87,7 +87,6 @@ view: users {
     label: "Product"
     type: string
     can_filter: yes
-    hidden: yes
     sql: CASE WHEN ${TABLE}.city = "ABC" THEN ${city} ELSE null END ;;
   }
 
