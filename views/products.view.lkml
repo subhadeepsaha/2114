@@ -47,9 +47,27 @@ view: products {
     sql: ${TABLE}.retail_price ;;
   }
 
+
   dimension: sku {
     type: string
     sql: ${TABLE}.sku ;;
+  }
+
+  dimension: brand_logo {
+    type: string
+    sql: ${brand} ;;
+    html:
+        {% if brand._value == "O'Neill" %}
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/O%27Neill_%28brand%29_logo.svg/220px-O%27Neill_%28brand%29_logo.svg.png">
+        {% elsif brand._value == "Calvin Klein" %}
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Calvin_klein_logo.svg/220px-Calvin_klein_logo.svg.png">
+        {% elsif brand._value == "Hanes" %}
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f0/Hanes-logo.svg/150px-Hanes-logo.svg.png">
+        {% elsif brand._value == "Tommy Hilfiger"%}
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Tommy_hilfig_vectorlogo.svg/250px-Tommy_hilfig_vectorlogo.svg.png">
+        {% else %}
+        <img src="https://icon-library.net/images/no-image-available-icon/no-image-available-icon-6.jpg" height="250" width="300">
+        {% endif %} ;;
   }
 
   # A measure is a field that uses a SQL aggregate function. Here are count, sum, and average
@@ -78,8 +96,9 @@ view: products {
 
   measure: total_retail_price {
     type: sum
-    hidden: yes
+    hidden: no
     sql: ${retail_price} ;;
+    value_format_name: usd
   }
 
   measure: average_retail_price {
