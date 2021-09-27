@@ -25,6 +25,10 @@ view: products {
   dimension: category {
     type: string
     sql: ${TABLE}.category ;;
+    link: {
+      label: "filter with same dashboard"
+      url: "/dashboards-next/192?Category={{value | url_encode}}"
+    }
   }
 
   dimension: department {
