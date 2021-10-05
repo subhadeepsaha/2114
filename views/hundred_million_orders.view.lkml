@@ -40,13 +40,13 @@ view: hundred_million_orders {
 
   measure: total_order_price {
     type: sum
-    hidden: yes
+
     sql: ${order_price} ;;
   }
 
   measure: average_order_price {
     type: average
-    hidden: yes
+
     sql: ${order_price} ;;
   }
 }

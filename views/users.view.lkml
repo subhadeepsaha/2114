@@ -73,6 +73,21 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
+    map_layer_name: us_states
+  }
+
+  filter: product_filter {
+    type: string
+    suggest_dimension: product_name_suggest
+    # suggest_persist_for: "0 minutes"
+    sql: {% condition product_filter %} ${product_name_suggest} {% endcondition %} ;;
+  }
+
+  dimension: product_name_suggest {
+    label: "Product"
+    type: string
+    can_filter: yes
+    sql: CASE WHEN ${TABLE}.city = "ABC" THEN ${city} ELSE null END ;;
   }
 
   dimension: zip {
