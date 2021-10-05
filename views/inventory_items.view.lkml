@@ -82,4 +82,5 @@ view: inventory_items {
     hidden: yes
     sql: ${cost} ;;
   }
+
 }

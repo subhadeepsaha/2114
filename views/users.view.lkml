@@ -80,6 +80,17 @@ view: users {
     sql: ${TABLE}.zip ;;
   }
 
+  dimension: ageTier {
+    type: tier
+    style: integer
+    tiers: [0, 10, 20, 30, 40, 50, 60, 70, 80,90]
+    sql: ${age} ;;
+  }
+dimension: month_formatted {
+  group_label: "Created" label: "Month"
+  sql: ${created_month} ;;
+  html: {{ rendered_value | append: "-01" | date: "%b'%y" }};;
+}
   # A measure is a field that uses a SQL aggregate function. Here are count, sum, and average
   # measures for numeric dimensions, but you can also add measures of many different types.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
@@ -103,6 +114,21 @@ view: users {
     hidden: yes
     sql: ${age} ;;
   }
+  measure: average {
+    type: number
+    sql: ${count}/${inventory_items.count} ;;
+  }
+
+  dimension: Past30 {
+    type: date
+    sql:  CAST(${created_date} AS DATE) - INTERVAL 30 day ;;
+  }
+
+  dimension: date_1 {
+    type: date
+    sql: (CAST(${created_date} AS DATE) - INTERVAL 0 year) - INTERVAL 30 day ;;
+  }
+
 
   # ----- Sets of fields for drilling ------
   set: detail {

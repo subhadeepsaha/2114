@@ -23,6 +23,21 @@ view: order_items {
     sql: ${TABLE}.inventory_item_id ;;
   }
 
+  dimension: Usformat {
+    type: number
+    value_format: "0.00\%"
+    sql: ${TABLE}.inventory_item_id ;;
+  }
+
+  dimension: Millions {
+    type: number
+    value_format:  "0.000,,\" M\""
+    sql: ${TABLE}.inventory_item_id ;;
+  }
+  dimension: month_num{
+    type: number
+    sql: (DATE_FORMAT(CONVERT_TZ(`returned_at`,'UTC','Asia/Calcutta'),'%m')) ;;
+  }
   dimension: order_id {
     type: number
     # hidden: yes
@@ -50,6 +65,15 @@ view: order_items {
     type: number
     sql: ${TABLE}.sale_price ;;
   }
+  dimension: Past30 {
+    type: date
+    sql:  CAST(${returned_date} AS DATE) - INTERVAL 30 day ;;
+  }
+
+  dimension: date_1 {
+    type: date
+    sql: (CAST(${returned_date} AS DATE) - INTERVAL 30 day) - INTERVAL 1 year - INTERVAL 1 day ;;
+  }
 
   # A measure is a field that uses a SQL aggregate function. Here are count, sum, and average
   # measures for numeric dimensions, but you can also add measures of many different types.
@@ -65,7 +89,6 @@ view: order_items {
 
   measure: total_sale_price {
     type: sum
-    hidden: yes
     sql: ${sale_price} ;;
   }
 
@@ -73,5 +96,45 @@ view: order_items {
     type: average
     hidden: yes
     sql: ${sale_price} ;;
+  }
+  parameter: date_granularity {
+    type: unquoted
+    allowed_value: {
+      label: "Break down by Day"
+      value: "day"
+    }
+    allowed_value: {
+      label: "Break down by Month"
+      value: "month"
+    }
+  }
+
+  dimension: date {
+    sql:
+    {% if date_granularity._parameter_value == 'day' %}
+      ${returned_date}
+    {% else date_granularity._parameter_value == 'month' %}
+      ${date_1}
+    {% endif %};;
+  }
+  parameter: Format1{
+    type: unquoted
+    allowed_value: {
+      label: "US format"
+      value: "US"
+    }
+    allowed_value: {
+      label: "Millions"
+      value: "MI"
+    }
+  }
+
+  dimension: Format {
+    sql:
+    {% if Format1._parameter_value == 'US' %}
+      ${Usformat}
+    {% else Format1._parameter_value == 'MI' %}
+      ${Millions}
+    {% endif %};;
   }
 }

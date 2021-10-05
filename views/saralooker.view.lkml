@@ -45,6 +45,11 @@ view: saralooker {
     sql: ${TABLE}.user_id ;;
   }
 
+  dimension: date_formatted {
+    sql: ${created_date};;
+    html: {{ rendered_value | date: "%b %d, %y" }};;
+  }
+
   # A measure is a field that uses a SQL aggregate function. Here are count, sum, and average
   # measures for numeric dimensions, but you can also add measures of many different types.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.

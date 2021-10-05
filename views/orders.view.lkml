@@ -35,10 +35,26 @@ view: orders {
   # This dimension will be called "Status" in Explore.
 
   dimension: status {
-    type: string
     sql: ${TABLE}.status ;;
+    html: {% if value == 'Complete' %}
+      <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% elsif value == 'Cancelled' %}
+      <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% else %}
+      <p style="color: black; background-color: orange; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% endif %}
+;;
   }
 
+  dimension: Colorfro{
+    html: {% if orders._user_id > 10000 %}
+      <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% elsif orders._user_id < 10000 %}
+      <p style="color: black; background-color: lightgreen; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% else %}
+      <p style="color: black; background-color: orange; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% endif %} ;;
+  }
   dimension: user_id {
     type: number
     # hidden: yes

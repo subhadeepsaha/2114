@@ -3,6 +3,7 @@ connection: "the_look"
 
 # include all the views
 include: "/views/**/*.view"
+include:/sql_runner_query.view.lkml
 
 # Datagroups define a caching policy for an Explore. To learn more,
 # use the Quick Help panel on the right to see documentation.
@@ -226,3 +227,4 @@ explore: xss_test_7 {}
 explore: xss_test_8 {}
 
 explore: xss_test_9 {}
+explore: sql_runner_query {}
