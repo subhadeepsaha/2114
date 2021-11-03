@@ -54,6 +54,11 @@ view: products {
     sql: ${TABLE}.sku ;;
   }
 
+  dimension: group {
+    type: string
+    sql: GROUP_CONCAT(DISTINCT Orders.status);;
+  }
+
   dimension: brand_logo {
     type: string
     sql: ${brand} ;;
@@ -77,7 +82,7 @@ view: products {
 
   measure: count {
     type: count
-    hidden: yes
+    hidden: no
     drill_fields: [id, item_name, inventory_items.count]
   }
 
@@ -97,15 +102,29 @@ view: products {
   }
 
   measure: total_retail_price {
-    type: sum
+    type: number
     hidden: no
     sql: ${retail_price} ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: average_retail_price {
     type: average
-    hidden: yes
+    hidden: no
     sql: ${retail_price} ;;
+  }
+  parameter: Test {
+    type: string
+    allowed_value: {value: "Total"}
+    allowed_value: {value: "Avg"}
+  }
+
+  measure: avg_sum_test {
+    sql:
+    {% if Test._parameter_value == "'Total'" %}
+     ${total_retail_price}
+    {% else %}
+     ${average_retail_price}
+    {% endif %};;
   }
 }

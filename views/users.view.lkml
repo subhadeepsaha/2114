@@ -24,7 +24,15 @@ view: users {
 
   dimension: city {
     type: string
-    sql: ${TABLE}.city ;;
+    sql: ${TABLE}.city;;
+    link : {
+      label: "Drill by City"
+      url: "https://lookerv2114.dev.looker.com/explore/ecommerce_saha/order_items?qid=8zL4CCqNhQWGo35h50Jf0a&origin_space=89&toggle=vis&f[users.city]={{ value }}&pivots=users.state"
+    }
+  }
+  dimension: NewCity {
+    sql: CASE WHEN ${city}='New York' THEN 'New'
+  ELSE ${city} END ;;
   }
 
   dimension: country {
@@ -112,7 +120,6 @@ dimension: month_formatted {
 
   measure: count {
     type: count
-    drill_fields: [detail*]
   }
 
   # These sum and average measures are hidden by default.

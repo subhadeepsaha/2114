@@ -62,7 +62,10 @@ view: orders {
     # hidden: yes
     sql: ${TABLE}.user_id ;;
   }
-
+  dimension: is_order_paid {
+    type: yesno
+    sql: ${status} = 'complete' ;;
+  }
   # A measure is a field that uses a SQL aggregate function. Here are count, sum, and average
   # measures for numeric dimensions, but you can also add measures of many different types.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
@@ -81,6 +84,7 @@ view: orders {
     fields: [
       id,
       users.id,
+      users.age,
       users.first_name,
       users.last_name,
       billion_orders.count,
