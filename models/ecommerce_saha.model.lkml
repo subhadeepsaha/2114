@@ -126,6 +126,7 @@ explore: order_items {
   }
 
   join: users {
+    sql_where: ${users.city} <> 'Chicago' ;;
     type: left_outer
     sql_on: ${orders.user_id} = ${users.id} ;;
     relationship: many_to_one
